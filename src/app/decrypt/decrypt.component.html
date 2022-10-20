@@ -1,0 +1,28 @@
+<div class="container container-fluid">
+  <form
+    class="row g-3"
+    id="decryptForm"
+    #decryptForm="ngForm"
+    (ngSubmit)="decrypt(decryptForm)"
+  >
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Select File to Encrypt</label>
+      <input class="form-control" type="file" id="file" (change)="selectedFile($event)" required />
+    </div>
+    <div class="col-md-4">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        ngModel
+        name="password"
+        id="password"
+        required
+        #password
+      />
+    </div>
+   <div class="col-12">
+      <button class="btn btn-primary" type="submit">Encrypt</button>
+    </div>
+  </form>
+</div>
