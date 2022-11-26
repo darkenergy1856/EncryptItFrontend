@@ -9,13 +9,11 @@ export class RequestHandlerService {
   constructor(private httpClient: HttpClient) {}
 
   startEncryption(formData: FormData) {
-    return this.httpClient.get(environment.baseURL + 'encrypt/' + formData, {
-      responseType: 'blob',
-    });
+    return this.httpClient.post(environment.baseURL + 'encrypt' , formData);
   }
 
   startDecryption(formData: FormData) {
-    return this.httpClient.get(environment.baseURL + 'decrypt/' + formData, {
+    return this.httpClient.post(environment.baseURL + 'decrypt/' + formData, {
       responseType: 'blob',
     });
   }
