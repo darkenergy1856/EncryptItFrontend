@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { RequestHandlerService } from '../request-handler.service';
 
 @Component({
   selector: 'app-decrypt',
@@ -9,21 +10,24 @@ import { NgForm } from '@angular/forms';
 export class DecryptComponent implements OnInit {
   File !: File;
 
-  constructor() { }
+  constructor(private requestService: RequestHandlerService,) { }
 
   ngOnInit(): void {
   }
 
-  decrypt (form : NgForm){
-    var formData: FormData = new FormData()
-    formData.append('key' , form.value.password)
-    formData.append('file' , this.File)
+  decrypt(form: NgForm) {
+    var formData: FormData = new FormData();
+    formData.append('key', form.value.password);
+    formData.append('files', this.File);
 
-    // this.requestService.startEncryption(formData).subscribe(res=>{
-    //   console.log(res);
-    //   saveAs(new Blob([res] , {type : res.type}),"encrypt");
-    //   console.log("I received response");
-    // })
+    this.requestService
+      .startDecryption(formData)
+      .subscribe({
+        next: (n) => {console.log(n);
+          this.requestService.downloadFile(n , 'decrypted')},
+        error: (e) => console.log(e),
+        complete: () => console.log(),
+      });
   }
 
   selectedFile(event: { target: any; }) {

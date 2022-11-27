@@ -6,27 +6,35 @@ import { RequestHandlerService } from '../request-handler.service';
 @Component({
   selector: 'app-encrypt',
   templateUrl: './encrypt.component.html',
-  styleUrls: ['./encrypt.component.css']
+  styleUrls: ['./encrypt.component.css'],
 })
 export class EncryptComponent {
-  constructor(private requestService : RequestHandlerService,private elementRef: ElementRef){}
+  constructor(
+    private requestService: RequestHandlerService,
+  ) {}
 
-  title = 'EncryptIt'
+  title = 'EncryptIt';
 
-  File !: File
+  File!: File;
 
-  encrypt (form : NgForm){
-    var formData: FormData = new FormData()
-    formData.append('key' , form.value.password)
-    formData.append('files' , this.File)
+  encrypt(form: NgForm) {
+    var formData: FormData = new FormData();
+    formData.append('key', form.value.password);
+    formData.append('files', this.File);
 
-      this.requestService.startEncryption(formData).subscribe(res=>{
-        console.log(res);
-        console.log("I received response");
-    })
+    this.requestService
+      .startEncryption(formData)
+      .subscribe({
+        next: (n) => {console.log(n);
+          this.requestService.downloadFile(n , 'encrypted')},
+        error: (e) => console.log(e),
+        complete: () => console.log(),
+      });
   }
 
-  selectedFile(event: { target: any; }) {
+
+
+  selectedFile(event: { target: any }) {
     this.File = <File>event.target!.files[0];
   }
 }
